@@ -1,44 +1,54 @@
-# My Python Project
+# 🧠 GraphTM-Scalability: DNA Sequence Classification with Graph Tsetlin Machines
 
-This is a Python project structured with virtual environment support and automated setup using npm scripts.
+This project leverages Graph Tsetlin Machines (GTM) to classify DNA sequences from viruses. It includes an automated Python environment setup using `npm` scripts and a preprocessed dataset for training and evaluation.
 
 ---
 
 ## 📦 Prerequisites
 
-Make sure the following are installed on your system:
+Ensure the following are installed on your system:
 
 - [Python 3.7+](https://www.python.org/downloads/)
 - [pip](https://pip.pypa.io/en/stable/)
 - [Node.js and npm](https://nodejs.org/)
+- `unzip` utility (for dataset extraction)
 
 ---
 
 ## 🚀 Getting Started
 
-1. **Clone the repository:**
+### 1. Clone the Repository
 
-   ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
-   cd your-repo-name
-   ```
+```bash
+git clone https://github.com/yourusername/your-repo-name.git
+cd your-repo-name
+```
 
-2. **Run the setup script via npm:**
+### 2. Set Up the Environment
 
-   ```bash
-   npm run setup-python
-   ```
+Run the setup script via npm:
 
-   This will:
-   - Create a virtual environment (if it doesn’t exist)
-   - Activate it temporarily within the script
-   - Install all Python dependencies listed in `requirements.txt`
+```bash
+npm run setup-python
+```
 
-3. **Run the application:**
+This will:
+- Create a Python virtual environment (`venv/`)
+- Activate the environment within the script
+- Install Python dependencies listed in `requirements.txt`
+- Extract the dataset to `data/Sequence_Dataset.csv`
 
-   ```bash
-   python src/main.py
-   ```
+### 3. Run the Application
+
+```bash
+npm start
+```
+
+Or manually:
+
+```bash
+python src/main.py
+```
 
 ---
 
@@ -47,21 +57,21 @@ Make sure the following are installed on your system:
 ```
 .
 ├── src/
-│   ├── main.py           # Main application script
-│   └── utils.py          # Utility functions
+│   ├── main.py             # Main script for training & evaluation
+│   └── utils.py            # Utility functions
 ├── data/
-│   └── sequence.csv      # Sample data
-├── venv/                 # Virtual environment (excluded from version control)
-├── requirements.txt      # Python dependencies
-├── package.json          # npm scripts to manage setup
-├── setup-python.sh       # Shell script for environment setup
-├── .gitignore            # Git ignore rules
-└── README.md             # This file
+│   └── Sequence_Dataset.csv.zip  # Compressed dataset file
+├── venv/                   # Virtual environment (not version controlled)
+├── requirements.txt        # Python dependencies
+├── package.json            # npm scripts for setup & execution
+├── setup-python.sh         # Shell script for environment setup
+├── .gitignore              # Files to exclude from version control
+└── README.md               # Project documentation
 ```
 
 ---
 
-## 🛠 Virtual Environment
+## ⚙️ Manual Virtual Environment Activation
 
 If you prefer to activate the virtual environment manually:
 
@@ -82,51 +92,44 @@ deactivate
 
 ---
 
-## 🧪 Training & Evaluation
+## 🧪 Model Training & Evaluation
 
-This project uses the [Graph Tsetlin Machine (GTM)](https://github.com/cair/Graph-Tsetlin-Machine) to classify DNA sequences from viruses. It includes both training and evaluation stages.
+The project uses [Graph Tsetlin Machines (GTM)](https://github.com/cair/Graph-Tsetlin-Machine) to classify DNA sequences. Training and evaluation are performed on a preprocessed, balanced dataset.
 
-### 📈 Results
+### 📈 Benchmark Results
 
-| Metric                | GraphTM-1 | GraphTM-2 | BiLSTM | LSTM  | GRU   | BiLSTM-CNN | GCN    |
-| --------------------- | --------- | --------- | ------ | ----- | ----- | ---------- | ------ |
-| Training Accuracy (%) | 60.74     | 95.17     | 94.43  | 88.70 | 94.68 | 96.77      | 96.64  |
-| Testing Accuracy (%)  | 59.81     | 95.14     | 92.69  | 87.29 | 94.05 | 95.44      | 96.35  |
-| Training Time (s)     | 62.47     | 84.37     | 50.39  | 26.02 | 25.47 | 32.65      | 226.36 |
+| Model         | Train Accuracy (%) | Test Accuracy (%) | Training Time (s) |
+|---------------|---------------|--------------|----------|
+| GraphTM-1     | 60.74         | 59.81        | 62.47    |
+| GraphTM-2     | 95.17         | 95.14        | 84.37    |
+| BiLSTM        | 94.43         | 92.69        | 50.39    |
+| LSTM          | 88.70         | 87.29        | 26.02    |
+| GRU           | 94.68         | 94.05        | 25.47    |
+| BiLSTM-CNN    | 96.77         | 95.44        | 32.65    |
+| GCN           | 96.64         | 96.35        | 226.36   |
 
-
-
-### 🧪 Run Training
-
-Run the following command to train and evaluate the model:
-
-```bash
-python src/main.py
-```
-
-Training and evaluation will be performed on the balanced and preprocessed dataset using the GTM classifier.
+*Note: These results are based on a fixed dataset and hardware; actual performance may vary.*
 
 ---
 
-## 🧬 Dataset
+## 🧬 Dataset Details
 
-The dataset should be placed in the `data/` directory and named `Sequence_Dataset.csv`.
+- The dataset file `Sequence_Dataset.csv.zip` should be placed in the project root.
+- After running `setup-python`, it will be extracted to the `data/` folder.
+- Contains DNA sequences from five viruses:
+  - SARS-CoV-2
+  - Influenza virus
+  - Dengue virus
+  - Zika virus
+  - Rotavirus
 
-This dataset contains DNA sequences for five viruses:
-
-- SARS-CoV-2
-- Influenza virus
-- Dengue virus
-- Zika virus
-- Rotavirus
-
-The script filters valid sequences and balances the dataset using Random sampling.
+The dataset is preprocessed and balanced using random sampling.
 
 ---
 
 ## 🔧 Configuration & Hyperparameters
 
-You can modify model parameters via the `Args` class inside `main.py`:
+Model parameters can be adjusted in the `Args` class inside `main.py`:
 
 ```python
 class Args:
@@ -138,16 +141,20 @@ class Args:
     ...
 ```
 
-Model-specific hyperparameters such as `T`, `s`, `depth`, and number of clauses can also be updated directly in `main.py`.
+You can also tweak model-specific parameters like `T`, `s`, `depth`, and clause count directly in `main.py`.
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Feel free to fork the repo, open pull requests, or file issues. Ensure you follow standard Python style (PEP 8) and document your code.
+We welcome contributions! Feel free to fork the repository, open pull requests, or file issues.
+
+- Follow [PEP 8](https://peps.python.org/pep-0008/) for code style
+- Include docstrings and comments where helpful
+- Provide tests if possible
 
 ---
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
